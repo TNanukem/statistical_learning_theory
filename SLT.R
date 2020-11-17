@@ -105,7 +105,7 @@ generate_shattering_equation_for_fixed_number_of_hyperplanes <- function(m, d, c
 
         if(i == 1){
             
-            if(isTRUE(ideal)){
+            if(!isTRUE(ideal)){
                 sums = append(sums, stringr::str_interp('Sum(c1,1,2^${m},'))
                 chooses = append(chooses, stringr::str_interp('Bin(2^(${d}*n^(2/(${d}+1))),c1)'))
             }
@@ -115,8 +115,15 @@ generate_shattering_equation_for_fixed_number_of_hyperplanes <- function(m, d, c
             }
         }
         else{
+            
+            if(!isTRUE(ideal)){
+                sums = append(sums, stringr::str_interp("Sum(${cs[i]},1,2^${m}-${cs[i-1]},"))
+                chooses = append(chooses, stringr::str_interp('Bin(2^(${d}*n^(2/(${d}+1)))-${cs[i-1]},${cs[i]})'))
+            }
+            else{
             sums = append(sums, stringr::str_interp("Sum(${cs[i]},1,2^${m}-${cs[i-1]},"))
             chooses = append(chooses, stringr::str_interp('Bin(2^${m}-${cs[i-1]},${cs[i]})'))
+            }
         }
     }
 
